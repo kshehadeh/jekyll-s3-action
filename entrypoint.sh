@@ -96,7 +96,7 @@ function build_site {
 #   chain somewhere (e.g. a credentials file)
 function publish_to_s3 {
     start_block "Publishing $SOURCE to S3 bucket named ${S3_BUCKET_NAME}/${S3_BUCKET_PATH}/"
-    aws s3 cp $SOURCE "s3://${S3_BUCKET_NAME}/${S3_BUCKET_PATH}/" --recursive > || end_block_failed "S3 Push failed. Exiting..."
+    aws s3 cp $SOURCE "s3://${S3_BUCKET_NAME}/${S3_BUCKET_PATH}/" --recursive || end_block_failed "S3 Push failed. Exiting..."
     end_block_success "Published to s3"
 }
 
