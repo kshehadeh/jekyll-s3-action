@@ -24,7 +24,33 @@ Create a AWS_ACCESS_KEY_ID and a AWS_SECRET_ACCESS_KEY secret using your repo's 
 
 **3. Profit**
 
+## Output
 
+When this runs you should see something like this:
+```
+🚩 Checking for expected environment variables
+   ✅ SOURCE found: ./_site
+   ✅ AWS_ACCESS_KEY_ID found: AK... 
+   ✅ AWS_SECRET_ACCESS_KEY found: mq... 
+   ✅ S3_BUCKET_NAME found: doc_bucket
+   ✅ S3_BUCKET_PATH found: engineering/runbooks
+
+
+🚩 Checking working directory for expected files(/github/workspace)
+   ✅ Found jekyll config file
+
+
+🚩 Installing bundle gems
+   ✅ Completed bundle install
+
+
+🚩 Building jekyll site
+   ✅ Jekyll build done
+
+
+🚩 Publishing ./_site to S3 bucket named doc_bucket/engineering/runbooks
+   ✅ Published to s3\n
+```
 
 
 ## Environment Variables
