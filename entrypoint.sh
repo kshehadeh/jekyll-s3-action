@@ -45,7 +45,7 @@ function block_msg {
 
 # validates that the given environment variable name ($1) is in the environment - exits the script if not found
 function check_env {
-    if [ -z "$1" ]
+    if [ -z "${!1}" ]
     then
         end_block_failed "$1 is not set in environment. Exiting..."
     else        
@@ -57,6 +57,16 @@ function check_env {
     fi     
 }
 
+# validates the path inside the bucket, the root of the bucket is used if S3_BUCKET_PATH is undefined
+function check_path {
+    if [ -z "${!1}" ]
+    then
+        S3_BUCKET_PATH_EFFECTIVE=""
+    else
+        S3_BUCKET_PATH_EFFECTIVE="${!1}/"
+    fi
+}
+
 # Makes sure that all the necessary environment variables are present.
 function validate_environment {
     start_block "Checking for expected environment variables"
@@ -64,7 +74,7 @@ function validate_environment {
     check_env "AWS_ACCESS_KEY_ID" secret
     check_env "AWS_SECRET_ACCESS_KEY" secret
     check_env "S3_BUCKET_NAME"
-    check_env "S3_BUCKET_PATH"
+    check_path "S3_BUCKET_PATH"
 
     start_block "Checking working directory for expected files(${CURRENT_DIR})"
     if test -f "_config.yml"; then
@@ -95,8 +105,8 @@ function build_site {
 #   that the access key information is either in the environment or in the credentials
 #   chain somewhere (e.g. a credentials file)
 function publish_to_s3 {
-    start_block "Publishing $SOURCE to S3 bucket named ${S3_BUCKET_NAME}/${S3_BUCKET_PATH}/"
-    aws s3 cp $SOURCE "s3://${S3_BUCKET_NAME}/${S3_BUCKET_PATH}/" --recursive || end_block_failed "S3 Push failed. Exiting..."
+    start_block "Publishing $SOURCE to S3 bucket named ${S3_BUCKET_NAME}/${S3_BUCKET_PATH_EFFECTIVE}/"
+    aws s3 cp $SOURCE "s3://${S3_BUCKET_NAME}/${S3_BUCKET_PATH_EFFECTIVE}" --recursive || end_block_failed "S3 Push failed. Exiting..."
     end_block_success "Published to s3"
 }
 
@@ -106,5 +116,3 @@ validate_environment
 install_gems
 build_site
 publish_to_s3
-
-

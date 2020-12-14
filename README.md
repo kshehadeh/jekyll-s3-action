@@ -75,3 +75,27 @@ This is the path to copy the data into (everything after the bucket name). As in
 s3://<S3_BUCKET_NAME>/<S3_BUCKET_PATH>/
 ```
 Note that you should **not have a starting or ending slash** in the path variable.
+This variable is optional, the root of the bucket is a default value.
+
+## AWS IAM policy
+
+```json
+{
+  "Version": "2012-10-17",
+  "Id": "PolicyForWebsiteEndpointsPublicContent",
+  "Statement": [
+    {
+      "Effect":"Allow",
+      "Action":[
+        "s3:PutObject",
+        "s3:DeleteObject",
+        "s3:GetObject"
+      ],
+      "Resource": [
+        "<S3_BUCKET_NAME>/*",
+        "<S3_BUCKET_NAME>"
+      ]
+    }
+  ]
+}
+```
